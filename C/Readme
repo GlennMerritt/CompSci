@@ -1,0 +1,50 @@
+C Shell Project - By Glenn Merritt & Ryan Merritt
+CS 416
+
+INTRODUCTION
+
+This project is an implementation of a shell in C. The shell can be used by compiling the source code:
+
+make clean
+make
+
+and then running the resulting executable:
+
+./cshell
+
+The prompt will display the current working directory on each line, in which the user can type commands.
+It can be exited at any time by typing "exit"
+Commands consist of an executable and arguments, but special characters(|, >, >>, ;) can be used for more advanced commands.
+All special characters can be used with or without spaces, but trailing spaces in names are ignored.
+For example:
+
+touch  a.txt ;   touch b.txt
+touch a.txt;touch b.txt
+
+will give the same result; the first command will not try to run "  touch".
+If a command contains multiple special characters in a row, such as ;; or ||, will not allow a command to run.
+
+SPECIAL CHARACTERS
+
+A ; character can be used to delimit separate commands, run in order from left to right.
+
+touch a.txt ; touch b.txt
+
+A | can be used to route the STDOUT of the command before to the STDIN of the one after.
+
+ls | wc -l
+
+> and >> redirect output to a file, so it will not be printed in the shell. > will remove the file beforehand, while >> will append to it. The stream will be originially initialized to a hidden file initalized with a dot before its filename, so that the program cannot see the file while it is running, then it will be renamed later. Also, only one redirect is recognized in each command; in addition, any pipes or spaces after a redirect are included in the filename.
+
+ls | wc -l >> aa.txt | cat ; cd ../
+
+The filename will be interpreted as  "aa.txt | cat "
+
+OTHER
+
+The cd command can be used to change the current working directory. It also supports piping and can be used in multi-line commands.
+For example:
+cd ../ ; ls | cd
+This will try to go to the parent directory then go back whatever ls returns(if only 1 directory is present, it will return to it)
+
+Commands are run in a child process which can be exited through Ctrl-C. This will send the SIGINT signal to that program.
